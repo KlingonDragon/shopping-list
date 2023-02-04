@@ -1,0 +1,20 @@
+{
+    "name": "Shopping List",
+    "short_name": "Shopping List",
+    "start_url": "./",
+    "description": "Webapp for creating and saving shopping lists to your device",
+    "categories": ["food","lifestyle","productivity","shopping","utilities"],
+    "theme_color": "#000000",
+    "background_color": "#000000",
+    "display": "standalone",
+    "icons": [
+        {
+            "src": "favicon.svg",
+            "sizes": "any"
+        },
+        {
+            "src": "favicon.png",
+            "sizes": "any"
+        }
+    ]
+}

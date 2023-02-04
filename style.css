@@ -1,0 +1,248 @@
+/* Colours */
+@media (prefers-color-scheme: light) {
+    :root {
+        color-scheme: light;
+        --html-bg: silver;
+        --html-colour: black;
+        --main-bg: white;
+        --main-colour: black;
+        --nav-hover: #3B3B3B;
+    }
+}
+@media (prefers-color-scheme: dark) {
+    :root {
+        color-scheme: dark;
+        --html-bg: #121212;
+        --html-colour: white;
+        --main-bg: #3B3B3B;
+        --main-colour: white;
+        --nav-hover: silver;
+    }
+}
+/* Default Element Styling */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    font-family: sans-serif;
+    border-collapse: collapse;
+    vertical-align: middle;
+}
+:root, main {
+    font-size: 120%;
+}
+
+/* Page Layout */
+html {
+    background: var(--html-bg);
+    color: var(--html-colour);
+}
+body {
+	width: 100%;
+	max-width: 40rem;
+	margin: 0 auto;
+	height: 100vh;
+    display: flex;
+    flex-flow: column nowrap;
+	justify-content: space-around;
+    align-items: stretch;
+    align-content: center;
+}
+header, footer {
+    padding: 0.25rem;
+}
+nav {
+    flex: 0 0 auto;
+    overflow-x: auto;
+    padding: 0.25rem 0.875rem 0;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-around;
+}
+nav > button {
+    background: var(--main-bg);
+    border: 0.125rem solid currentColor;
+    padding: 0.25rem;
+    margin: 0.25rem;
+    border-radius: 0.5rem;
+}
+nav > button > svg {
+    width: 3rem;
+    height: 3rem;
+    margin: 0.125rem;
+}
+nav > button:is(:hover, :focus, :active) {
+    color: var(--nav-hover);
+    box-shadow: 0 0 0.25rem 0 currentColor;
+}
+main {
+    flex: 1 1 auto;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: space-between;
+    overflow: auto;
+    padding: 0.5rem;
+    background: var(--main-bg);
+    color: var(--main-colour);
+    border: 0.125rem solid currentColor;
+    border-radius: 1rem;
+    margin: 0.5rem;
+}
+.listThing {
+    flex-grow: 1;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: flex-start;
+    align-items: stretch;
+    align-content: center;
+    overflow: auto;
+    padding: 0.125rem;
+    margin: 0.125rem;
+	border: 0.0625rem solid currentColor;
+    border-radius: 0.25rem;
+}
+.listThing > div {
+    display: inline-flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    align-items: center;
+	padding-block-end: 0.0625rem;
+	border-block-end: 0.0625rem dotted currentColor;
+}
+.listThing > div.json {
+    flex-direction: column;
+	border-block-end: none;
+    align-items: flex-start;
+    padding: 0.125rem;
+    margin: 0.125rem;
+	border: 0.0625rem solid currentColor;
+    border-radius: 0.25rem;
+}
+.listThing > div > strong {
+    text-align: start;
+    margin-inline-end: 1rem;
+}
+.listThing > div > button {
+    margin-inline-start: 1rem;
+}
+.newThing {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+	border-block-start: 0.125rem solid currentColor;
+    padding-block-start: 0.25rem;
+    margin-block-start: 0.25rem;
+}
+.newThing fieldset {
+    font-size: 1rem;
+}
+.newThing fieldset label {
+    margin-inline: 1rem;
+}
+[data-ticked=true] {
+    text-decoration: line-through;
+}
+[data-ticked=true] > button {
+    text-decoration: none;
+}
+[data-ticked] > .tickicon > input[type=checkbox] {
+    zoom: 300%;
+}
+
+/* Element Styles */
+h2 {
+	border-block-end: 0.125rem solid currentColor;
+    padding-block-end: 0.25rem;
+    margin-block-end: 0.25rem;
+}
+a {
+    color: inherit;
+}
+a.button {
+    appearance: button;
+    text-decoration: none;
+}
+a[download] {
+    align-self: flex-end;
+}
+small {
+    font-size: x-small;
+}
+small.json {
+    text-align: start;
+    white-space: pre;
+}
+img {
+    object-fit: contain;
+}
+button, a.button {
+    cursor: pointer;
+    border-radius: 0.25rem;
+    margin: 0.125rem;
+    padding: 0.125rem;
+    border: 0.0625rem solid currentColor;
+}
+button.delete {
+    background: firebrick;
+    color: white;
+    border: 0.125rem solid red;
+}
+fieldset {
+	display: inline-block;
+    margin: 0.5rem;
+    padding: 0.5rem;
+    border: 0.125rem solid currentColor;
+    border-radius: 0.5rem;
+}
+legend {
+	text-align: start;
+    margin: -0.625rem 0.5rem;
+	padding: 0.125rem 0.5rem;
+    border: 0.0625rem solid currentColor;
+	border-radius: 1em;
+    font-weight: bold;
+}
+label {
+	display: inline-flex;
+	flex-flow: row nowrap;
+	justify-content: space-between;
+	justify-items: center;
+	align-content: center;
+	align-items: center;
+	padding-block-end: 0.0625rem;
+	border-block-end: 0.0625rem dotted currentColor;
+	margin: 0.125rem;
+}
+label > :is(input, select, span) {
+	margin-inline-start: 1rem;
+}
+input, select {
+    background: var(--html-bg);
+	border-radius: 0.5rem;
+	padding: 0.125rem 0;
+}
+
+
+/* Scrollbars */
+::-webkit-scrollbar, ::-webkit-scrollbar-track, ::-webkit-scrollbar-corner, ::-webkit-scrollbar-thumb {
+    width: 1rem;
+    height: 1rem;
+    border: 0.25rem solid transparent;
+}
+::-webkit-scrollbar {
+    background: inherit;
+    border-radius: 0.375rem;
+}
+::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 0 0.0625rem currentColor;
+    border-radius: 1rem;
+}
+::-webkit-scrollbar-thumb {
+    box-shadow: inset 0 0 0 1rem currentColor;
+    border-radius: 1rem;
+}
+/* Scrollbars (for non blink/webkit browsers (firefox)) */
+* {
+    scrollbar-color: var(--html-colour) var(--html-bg);
+}
