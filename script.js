@@ -154,16 +154,18 @@ async function loadList(listId) {
     let newItemIdInput, categorySelect, itemSelect, quantityInput, quantitySelect, itemNoteInput, addButton;
     main.__(
         _('h2')._(savedInfo.name),
-        _('section')._(...savedInfo.list.entries().sort(([a, x], [b, y]) => a.toUpperCase() < b.toUpperCase() ? -1 : a.toUpperCase() > b.toUpperCase() ? 1 : 0).map(([category, items]) => items.keys().length?_('fieldset', null, ['listThing'])._(
+        _('section')._(...savedInfo.list.entries().sort(([a, x], [b, y]) => a.toUpperCase() < b.toUpperCase() ? -1 : a.toUpperCase() > b.toUpperCase() ? 1 : 0).map(([category, items]) => items.keys().length ? _('fieldset', null, ['listThing'])._(
             _('legend')._(category),
             ...items.entries().map(([itemId, { item: name, quantity: quantityValue, quantityType: quantityType, note: note, ticked: ticked }]) => _('div', { dataset: { ticked } })._(
                 _('span', null, ['tickicon'])._(_('input', { type: 'checkbox', checked: ticked }).on('click', () => {
                     savedInfo.list[category][itemId].ticked = !savedInfo.list[category][itemId].ticked;
                     loadList(listId);
                 }), '\u2003'),
-                _('strong')._(name),
-                _('span')._(`${quantityValue}\u2002${quantityType}`),
-                _('span')._(note),
+                _('span', null, ['content'])._(
+                    _('strong')._(name),
+                    _('span')._(`${quantityValue}\u2002${quantityType}`),
+                    _('span')._(note)
+                ),
                 _('span', null, ['buttons'])._(
                     _('button')._('Edit').on('click', () => {
                         newItemIdInput.value = itemId;
@@ -180,7 +182,7 @@ async function loadList(listId) {
                     })
                 )
             ))
-        ):null)),
+        ) : null)),
         _('section', null, ['newThing'])._(
             newItemIdInput = _('input', { type: 'hidden' }),
             _('label')._(
@@ -212,7 +214,7 @@ async function loadList(listId) {
                     addButton.disabled = true;
                 })
             ),
-            _('label')._('Quantity', quantityInput = _('input', { type: 'number', disabled: true }), quantitySelect = _('select', { disabled: true }).on('change', ()=> addButton.disabled = false)),
+            _('label')._('Quantity', quantityInput = _('input', { type: 'number', disabled: true }), quantitySelect = _('select', { disabled: true }).on('change', () => addButton.disabled = false)),
             _('label')._('Note', itemNoteInput = _('input', { type: 'text', disabled: true })),
             addButton = _('button', { disabled: true })._('Add to List').on('click', () => {
                 if (!(categorySelect.value && itemSelect.value && quantityInput.checkValidity() && quantitySelect.value)) { return; }

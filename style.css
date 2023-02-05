@@ -127,6 +127,14 @@ main {
     text-align: start;
     margin-inline-end: 1rem;
 }
+.listThing > div > .content {
+    flex: 1 1 auto;
+    display: inline-flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    align-items: center;
+    margin-inline-end: 1rem;
+}
 .listThing > div > span.buttons {
     flex: 0 0 auto;
 }
