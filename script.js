@@ -342,7 +342,7 @@ function editCategory(category) {
                 }
             }),
             _('fieldset')._(_('legend')._('Quantities'), ...(quantatyList = [
-                'Unit(s)', 'Bag(s)', 'Bottle(s)', 'Can(s)', 'Jar(s)', 'Pack(s)', 'Pot(s)', 'Punnet(s)', 'Tin(s)', 'g', 'kg', 'oz', 'lbs', 'ml', 'cl', 'L', 'fl oz', 'Pint(s)'
+                'Unit(s)', 'Bag(s)', 'Bottle(s)', 'Can(s)', 'Jar(s)', 'Box(es)', 'Pack(s)', 'Pot(s)', 'Punnet(s)', 'Tin(s)', 'g', 'kg', 'oz', 'lbs', 'ml', 'cl', 'L', 'fl oz', 'Pint(s)'
             ].map(name => _('label', { dataset: { name } })._(name, _('input', { type: 'checkbox', name })))))
         )
     );
