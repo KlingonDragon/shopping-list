@@ -90,7 +90,7 @@ main {
     background: var(--main-bg);
     color: var(--main-colour);
     border: 0.125rem solid currentColor;
-    border-radius: 1rem;
+    border-radius: 0.5rem;
     margin: 0.5rem;
 }
 .listThing {
@@ -140,7 +140,7 @@ main {
     flex: 0 0 auto;
 }
 .listThing > div button {
-    margin-inline-start: 1rem;
+    margin-inline-start: 0.5rem;
 }
 .newThing {
     display: flex;
@@ -171,6 +171,7 @@ span.tickicon {
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    margin-inline-end: 0.25rem;
 }
 
 /* Element Styles */

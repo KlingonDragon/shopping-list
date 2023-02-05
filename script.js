@@ -160,7 +160,7 @@ async function loadList(listId) {
                 _('span', null, ['tickicon'])._(_('input', { type: 'checkbox', checked: ticked }).on('click', () => {
                     savedInfo.list[category][itemId].ticked = !savedInfo.list[category][itemId].ticked;
                     loadList(listId);
-                }), '\u2003'),
+                })),
                 _('span', null, ['content'])._(
                     _('strong')._(name),
                     _('span')._(`${quantityValue}\u2002${quantityType}`),
