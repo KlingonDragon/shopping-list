@@ -154,7 +154,7 @@ async function loadList(listId) {
     let newItemIdInput, categorySelect, itemSelect, quantityInput, quantitySelect, itemNoteInput, addButton;
     main.__(
         _('h2')._(savedInfo.name),
-        _('section')._(...savedInfo.list.entries().map(([category, items]) => _('fieldset', null, ['listThing'])._(
+        _('section')._(...savedInfo.list.entries().sort(([a, x], [b, y]) => a.toUpperCase() < b.toUpperCase() ? -1 : a.toUpperCase() > b.toUpperCase() ? 1 : 0).map(([category, items]) => items.keys().length?_('fieldset', null, ['listThing'])._(
             _('legend')._(category),
             ...items.entries().map(([itemId, { item: name, quantity: quantityValue, quantityType: quantityType, note: note, ticked: ticked }]) => _('div', { dataset: { ticked } })._(
                 _('span', null, ['tickicon'])._(_('input', { type: 'checkbox', checked: ticked }).on('click', () => {
@@ -175,12 +175,12 @@ async function loadList(listId) {
                         quantitySelect.value = quantityType;
                     }),
                     _('button', null, ['delete'])._('Delete').on('click', () => {
-                        savedInfo[category][itemId] = undefined;
+                        savedInfo.list[category][itemId] = undefined;
                         loadList(listId);
                     })
                 )
             ))
-        ))),
+        ):null)),
         _('section', null, ['newThing'])._(
             newItemIdInput = _('input', { type: 'hidden' }),
             _('label')._(
