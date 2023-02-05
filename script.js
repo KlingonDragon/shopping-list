@@ -110,7 +110,8 @@ export const _option = (value) => _('option', { value })._(value);
     // reduce    remove item from array and return array
     Array.prototype.remove = function (item) { let index = this.indexOf(item); if (index != -1) { this.splice(index, 1) }; return this; };
     // unique    remove duplicates and return array
-    Array.prototype.unique = function () { return this.filter((item, index) => this.indexOf(item) === index); };
+    Array.prototype.unique = function () { return this.filter((item, index) => this.indexOf(item) === index).sort(); };
+    Array.prototype.uniqueNoSort = function () { return this.filter((item, index) => this.indexOf(item) === index); };
 }
 
 // InputElement
@@ -384,7 +385,7 @@ $('nav > button[name=manageData]').on('click', async () => {
                 new FileReader().on('load', ({ target: { result: json } }) => JSON.parse(json).forEach(({ category: category, items: items }) => {
                     localStorage.setItem('categoryList', JSON.stringify(JSON.parse(localStorage.getItem('categoryList') ?? '[]').append(category).unique()));
                     localStorage.setItem(`category_${category}`, JSON.stringify(JSON.parse(localStorage.getItem(`category_${category}`) ?? '[]').append(...items.map(item => item.item)).unique()));
-                    items.forEach(({ item: item, quantities: quantities }) => localStorage.setItem(`item_${category}_${item}`, JSON.stringify(quantities.unique())));
+                    items.forEach(({ item: item, quantities: quantities }) => localStorage.setItem(`item_${category}_${item}`, JSON.stringify(quantities.uniqueNoSort())));
                     location.reload(true);
                 })).readAsText(this.files[0]);
             })),

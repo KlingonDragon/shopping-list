@@ -149,11 +149,8 @@ main {
     flex: 1 1 100%;
     display: inline-flex;
 }
-[data-ticked=true] {
+[data-ticked=true] > :not(button, .tickicon) {
     text-decoration: line-through;
-}
-[data-ticked=true] > button {
-    text-decoration: none;
 }
 [data-ticked] > .tickicon > input[type=checkbox] {
     zoom: 300%;
