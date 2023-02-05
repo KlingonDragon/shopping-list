@@ -164,7 +164,7 @@ async function loadList(listId) {
                 _('strong')._(name),
                 _('span')._(`${quantityValue}\u2002${quantityType}`),
                 _('span')._(note),
-                _('span')._(
+                _('span', null, ['buttons'])._(
                     _('button')._('Edit').on('click', () => {
                         newItemIdInput.value = itemId;
                         categorySelect.value = category;
@@ -266,7 +266,7 @@ function renderLists() {
                 _('br'),
                 _('small')._(`Created: ${new Date(Number(listId)).toISOString().replace('T', '\u2002').substring(0, 16)}`)
             ),
-            _('span')._(
+            _('span', null, ['buttons'])._(
                 _('button')._('Load list').on('click', () => loadList(listId)),
                 _('button', null, ['delete'])._('Delete').on('click', () => {
                     listOfLists[listId] = undefined;
@@ -290,7 +290,7 @@ function renderCategories() {
         _('h2')._('Edit Categories'),
         _('section', null, ['listThing'])._(...categoryList.map(category => _('div')._(
             _('strong')._(category),
-            _('span')._(
+            _('span', null, ['buttons'])._(
                 _('button')._('Edit Items').on('click', () => {
                     editCategory(category);
                 }),
@@ -320,7 +320,7 @@ function editCategory(category) {
         _('h2')._(`Edit ${category} Items`),
         _('section', null, ['listThing'])._(...itemList.map(item => _('div')._(
             _('strong')._(item),
-            _('span')._(
+            _('span', null, ['buttons'])._(
                 _('button')._('Edit Item').on('click', () => {
                     newItemName.value = item;
                     const itemQuantaties = JSON.parse(localStorage.getItem(`item_${category}_${item}`));

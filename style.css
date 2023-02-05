@@ -127,6 +127,9 @@ main {
     text-align: start;
     margin-inline-end: 1rem;
 }
+.listThing > div > span.buttons {
+    flex: 0 0 auto;
+}
 .listThing > div button {
     margin-inline-start: 1rem;
 }
