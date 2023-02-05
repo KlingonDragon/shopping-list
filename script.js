@@ -289,15 +289,17 @@ function renderCategories() {
         _('h2')._('Edit Categories'),
         _('section', null, ['listThing'])._(...categoryList.map(category => _('div')._(
             _('strong')._(category),
-            _('button')._('Edit Items').on('click', () => {
-                editCategory(category);
-            }),
-            _('button', null, ['delete'])._('Delete').on('click', () => {
-                localStorage.setItem('categoryList', JSON.stringify(categoryList.remove(category)));
-                JSON.parse(localStorage.getItem(`category_${category}`) ?? '[]').unique().forEach(item=>localStorage.removeItem(`item_${category}_${item}`));
-                localStorage.removeItem(`category_${category}`);
-                renderCategories();
-            })
+            _('span')._(
+                _('button')._('Edit Items').on('click', () => {
+                    editCategory(category);
+                }),
+                _('button', null, ['delete'])._('Delete').on('click', () => {
+                    localStorage.setItem('categoryList', JSON.stringify(categoryList.remove(category)));
+                    JSON.parse(localStorage.getItem(`category_${category}`) ?? '[]').unique().forEach(item => localStorage.removeItem(`item_${category}_${item}`));
+                    localStorage.removeItem(`category_${category}`);
+                    renderCategories();
+                })
+            )
         ))),
         _('section', null, ['newThing'])._(
             _('label')._('New Category', newCategoryInput = _('input', { type: 'text' })),
@@ -305,7 +307,7 @@ function renderCategories() {
                 if (!(newCategoryInput.checkValidity())) { return; }
                 localStorage.setItem('categoryList', JSON.stringify(categoryList.append(newCategoryInput.value).unique()));
                 localStorage.setItem(`category_${newCategoryInput.value}`, JSON.stringify(JSON.parse(localStorage.getItem(`category_${newCategoryInput.value}`) ?? '[]')));
-                renderCategories();
+                editCategory(newCategoryInput.value);
             })
         )
     );
@@ -317,23 +319,25 @@ function editCategory(category) {
         _('h2')._(`Edit ${category} Items`),
         _('section', null, ['listThing'])._(...itemList.map(item => _('div')._(
             _('strong')._(item),
-            _('button')._('Edit Item').on('click', () => {
-                newItemName.value = item;
-                const itemQuantaties = JSON.parse(localStorage.getItem(`item_${category}_${item}`));
-                quantatyList.forEach(label => label.$('input').checked = (itemQuantaties.indexOf(label.dataset.name) != -1));
-            }),
-            _('button', null, ['delete'])._('Delete').on('click', () => {
-                localStorage.setItem(`category_${category}`, JSON.stringify(itemList.remove(item)));
-                localStorage.removeItem(`item_${category}_${item}`);
-                editCategory(category);
-            })
+            _('span')._(
+                _('button')._('Edit Item').on('click', () => {
+                    newItemName.value = item;
+                    const itemQuantaties = JSON.parse(localStorage.getItem(`item_${category}_${item}`));
+                    quantatyList.forEach(label => label.$('input').checked = (itemQuantaties.indexOf(label.dataset.name) != -1));
+                }),
+                _('button', null, ['delete'])._('Delete').on('click', () => {
+                    localStorage.setItem(`category_${category}`, JSON.stringify(itemList.remove(item)));
+                    localStorage.removeItem(`item_${category}_${item}`);
+                    editCategory(category);
+                })
+            )
         ))),
         _('section', null, ['newThing'])._(
             _('label')._('New Item', newItemName = _('input', { type: 'text' })),
             _('button')._('Save Item').on('click', () => {
                 if (newItemName.checkValidity()) {
                     localStorage.setItem(`category_${category}`, JSON.stringify(itemList.append(newItemName.value).unique()));
-                    localStorage.setItem(`item_${category}_${newItemName.value}`, JSON.stringify(quantatyList.filter(label=>label.$('input').checked).map(label=>label.dataset.name)));
+                    localStorage.setItem(`item_${category}_${newItemName.value}`, JSON.stringify(quantatyList.filter(label => label.$('input').checked).map(label => label.dataset.name)));
                     editCategory(category);
                 }
             }),
