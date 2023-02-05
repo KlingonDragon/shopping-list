@@ -162,17 +162,19 @@ async function loadList(listId) {
                 }), '\u2003'),
                 _('strong')._(name),
                 `${quantityValue}\u2002${quantityType}`,
-                _('button')._('Edit').on('click', () => {
-                    newItemIdInput.value = itemId;
-                    categorySelect.value = category;
-                    itemSelect.value = name;
-                    quantityInput.value = quantityValue;
-                    quantitySelect.value = quantityType;
-                }),
-                _('button', null, ['delete'])._('Delete').on('click', () => {
-                    savedInfo[category][itemId] = undefined;
-                    loadList(listId);
-                })
+                _('span')._(
+                    _('button')._('Edit').on('click', () => {
+                        newItemIdInput.value = itemId;
+                        categorySelect.value = category;
+                        itemSelect.value = name;
+                        quantityInput.value = quantityValue;
+                        quantitySelect.value = quantityType;
+                    }),
+                    _('button', null, ['delete'])._('Delete').on('click', () => {
+                        savedInfo[category][itemId] = undefined;
+                        loadList(listId);
+                    })
+                )
             ))
         ))),
         _('section', null, ['newThing'])._(
@@ -204,7 +206,7 @@ async function loadList(listId) {
             _('label')._('Quantity', quantityInput = _('input', { type: 'number', disabled: true }), quantitySelect = _('select', { disabled: true })),
             _('button')._('Add to List').on('click', () => {
                 if (!(categorySelect.value && itemSelect.value && quantityInput.checkValidity() && quantitySelect.value)) { return; }
-                const newItemId = newItemIdInput.value ?? Date.now();
+                const newItemId = newItemIdInput.value || Date.now();
                 if ((savedInfo.list.keys().indexOf(categorySelect.value) == -1)) { savedInfo.list[categorySelect.value] = {} }
                 savedInfo.list[categorySelect.value][newItemId] = { item: itemSelect.value, quantity: quantityInput.value, quantityType: quantitySelect.value, ticked: false };
                 loadList(listId);
@@ -215,6 +217,8 @@ async function loadList(listId) {
 function saveList() {
     localStorage.setItem(`list_${main.dataset.listId}`, JSON.stringify(savedInfo));
     savedInfo = undefined;
+    main.dataset.listId = null;
+    main.dataset.listName = null;
 }
 
 // Button click functions
@@ -250,15 +254,17 @@ function renderLists() {
             _('strong')._(
                 listName,
                 _('br'),
-                _('small')._(`Created: ${new Date(Number(listId)).toISOString().replace('T','\u2002').substring(0,16)}`)
+                _('small')._(`Created: ${new Date(Number(listId)).toISOString().replace('T', '\u2002').substring(0, 16)}`)
             ),
-            _('button')._('Load list').on('click', () => loadList(listId)),
-            _('button', null, ['delete'])._('Delete').on('click', () => {
-                listOfLists[listId] = undefined;
-                localStorage.setItem('list_id_list', JSON.stringify(listOfLists));
-                localStorage.removeItem(`list_${listId}`);
-                renderLists();
-            })
+            _('span')._(
+                _('button')._('Load list').on('click', () => loadList(listId)),
+                _('button', null, ['delete'])._('Delete').on('click', () => {
+                    listOfLists[listId] = undefined;
+                    localStorage.setItem('list_id_list', JSON.stringify(listOfLists));
+                    localStorage.removeItem(`list_${listId}`);
+                    renderLists();
+                })
+            )
         )))
     );
 };
@@ -279,6 +285,7 @@ function renderCategories() {
             }),
             _('button', null, ['delete'])._('Delete').on('click', () => {
                 localStorage.setItem('categoryList', JSON.stringify(categoryList.remove(category)));
+                JSON.parse(localStorage.getItem(`category_${category}`) ?? '[]').unique().forEach(item=>localStorage.removeItem(`item_${category}_${item}`));
                 localStorage.removeItem(`category_${category}`);
                 renderCategories();
             })
@@ -307,23 +314,23 @@ function editCategory(category) {
                 quantatyList.forEach(label => label.$('input').checked = (itemQuantaties.indexOf(label.dataset.name) != -1));
             }),
             _('button', null, ['delete'])._('Delete').on('click', () => {
-                localStorage.setItem(`category_${category}`, JSON.stringify(itemList.remove(category)));
+                localStorage.setItem(`category_${category}`, JSON.stringify(itemList.remove(item)));
                 localStorage.removeItem(`item_${category}_${item}`);
                 editCategory(category);
             })
         ))),
         _('section', null, ['newThing'])._(
             _('label')._('New Item', newItemName = _('input', { type: 'text' })),
-            _('fieldset')._(_('legend')._('Quantities'), ...(quantatyList = [
-                'Unit(s)', 'Bag(s)', 'Bottle(s)', 'Can(s)', 'Jar(s)', 'Pack(s)', 'Pot(s)', 'Punnet(s)', 'Tin(s)', 'g', 'kg', 'oz', 'lbs', 'ml', 'cl', 'L', 'fl oz', 'Pint(s)'
-            ].map(name => _('label', { dataset: { name } })._(name, _('input', { type: 'checkbox', name }))))),
             _('button')._('Save Item').on('click', () => {
                 if (newItemName.checkValidity()) {
                     localStorage.setItem(`category_${category}`, JSON.stringify(itemList.append(newItemName.value).unique()));
                     localStorage.setItem(`item_${category}_${newItemName.value}`, JSON.stringify(quantatyList.filter(label=>label.$('input').checked).map(label=>label.dataset.name)));
                     editCategory(category);
                 }
-            })
+            }),
+            _('fieldset')._(_('legend')._('Quantities'), ...(quantatyList = [
+                'Unit(s)', 'Bag(s)', 'Bottle(s)', 'Can(s)', 'Jar(s)', 'Pack(s)', 'Pot(s)', 'Punnet(s)', 'Tin(s)', 'g', 'kg', 'oz', 'lbs', 'ml', 'cl', 'L', 'fl oz', 'Pint(s)'
+            ].map(name => _('label', { dataset: { name } })._(name, _('input', { type: 'checkbox', name })))))
         )
     );
 }
