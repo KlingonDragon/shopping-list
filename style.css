@@ -236,8 +236,14 @@ input, select {
 	border-radius: 0.5rem;
 	padding: 0.125rem 0;
 }
+:is(input, select)[disabled] {
+    color: transparent;
+}
 input[type=number] {
-    max-width: 3em;
+    max-width: 4em;
+}
+input::-webkit-inner-spin-button {
+    margin-inline-end: 0.25rem;
 }
 input[type=file] {
     padding: 0.25rem;

@@ -150,23 +150,26 @@ async function loadList(listId) {
     main.dataset.page = 'list';
     main.dataset.listId = listId;
     main.dataset.listName = savedInfo.name;
-    let newItemIdInput, categorySelect, itemSelect, quantityInput, quantitySelect;
+    let newItemIdInput, categorySelect, itemSelect, quantityInput, quantitySelect, itemNoteInput;
     main.__(
         _('h2')._(savedInfo.name),
         _('section')._(...savedInfo.list.entries().map(([category, items]) => _('fieldset', null, ['listThing'])._(
             _('legend')._(category),
-            ...items.entries().map(([itemId, { item: name, quantity: quantityValue, quantityType: quantityType, ticked: ticked }]) => _('div', { dataset: { ticked } })._(
+            ...items.entries().map(([itemId, { item: name, quantity: quantityValue, quantityType: quantityType, note: note, ticked: ticked }]) => _('div', { dataset: { ticked } })._(
                 _('span', null, ['tickicon'])._(_('input', { type: 'checkbox', checked: ticked }).on('click', () => {
                     savedInfo.list[category][itemId].ticked = !savedInfo.list[category][itemId].ticked;
                     loadList(listId);
                 }), '\u2003'),
                 _('strong')._(name),
-                `${quantityValue}\u2002${quantityType}`,
+                _('span')._(`${quantityValue}\u2002${quantityType}`),
+                _('span')._(note),
                 _('span')._(
                     _('button')._('Edit').on('click', () => {
                         newItemIdInput.value = itemId;
                         categorySelect.value = category;
+                        categorySelect.do('change');
                         itemSelect.value = name;
+                        itemSelect.do('change');
                         quantityInput.value = quantityValue;
                         quantitySelect.value = quantityType;
                     }),
@@ -185,6 +188,7 @@ async function loadList(listId) {
                     itemSelect.disabled = false;
                     quantityInput.disabled = true;
                     quantitySelect.disabled = true;
+                    itemNoteInput.disabled = true;
                     itemSelect.__(
                         _('option'),
                         ...JSON.parse(localStorage.getItem(`category_${categorySelect.value}`) ?? '[]').unique().map(_option)
@@ -195,20 +199,23 @@ async function loadList(listId) {
                 'Item',
                 itemSelect = _('select', { disabled: true }).on('change', () => {
                     quantityInput.disabled = false;
+                    quantityInput.value = null;
                     quantitySelect.disabled = false;
-                    quantityInput.value = undefined;
                     quantitySelect.__(
                         _('option'),
                         ...JSON.parse(localStorage.getItem(`item_${categorySelect.value}_${itemSelect.value}`) ?? '[]').unique().map(_option)
-                    )
+                    );
+                    itemNoteInput.disabled = false;
+                    itemNoteInput.value = null;
                 })
             ),
             _('label')._('Quantity', quantityInput = _('input', { type: 'number', disabled: true }), quantitySelect = _('select', { disabled: true })),
+            _('label')._('Note', itemNoteInput = _('input', { type: 'text', disabled: true })),
             _('button')._('Add to List').on('click', () => {
                 if (!(categorySelect.value && itemSelect.value && quantityInput.checkValidity() && quantitySelect.value)) { return; }
                 const newItemId = newItemIdInput.value || Date.now();
                 if ((savedInfo.list.keys().indexOf(categorySelect.value) == -1)) { savedInfo.list[categorySelect.value] = {} }
-                savedInfo.list[categorySelect.value][newItemId] = { item: itemSelect.value, quantity: quantityInput.value, quantityType: quantitySelect.value, ticked: false };
+                savedInfo.list[categorySelect.value][newItemId] = { item: itemSelect.value, quantity: quantityInput.value, quantityType: quantitySelect.value, note: itemNoteInput.value, ticked: false };
                 loadList(listId);
             })
         )
