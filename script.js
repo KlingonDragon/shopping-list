@@ -150,7 +150,7 @@ async function loadList(listId) {
     main.dataset.page = 'list';
     main.dataset.listId = listId;
     main.dataset.listName = savedInfo.name;
-    let newItemIdInput, categorySelect, itemSelect, quantityInput, quantitySelect, itemNoteInput;
+    let newItemIdInput, categorySelect, itemSelect, quantityInput, quantitySelect, itemNoteInput, addButton;
     main.__(
         _('h2')._(savedInfo.name),
         _('section')._(...savedInfo.list.entries().map(([category, items]) => _('fieldset', null, ['listThing'])._(
@@ -193,6 +193,7 @@ async function loadList(listId) {
                         _('option'),
                         ...JSON.parse(localStorage.getItem(`category_${categorySelect.value}`) ?? '[]').unique().map(_option)
                     )
+                    addButton.disabled = true;
                 })
             ),
             _('label')._(
@@ -207,11 +208,12 @@ async function loadList(listId) {
                     );
                     itemNoteInput.disabled = false;
                     itemNoteInput.value = null;
+                    addButton.disabled = true;
                 })
             ),
-            _('label')._('Quantity', quantityInput = _('input', { type: 'number', disabled: true }), quantitySelect = _('select', { disabled: true })),
+            _('label')._('Quantity', quantityInput = _('input', { type: 'number', disabled: true }), quantitySelect = _('select', { disabled: true }).on('change', ()=> addButton.disabled = false)),
             _('label')._('Note', itemNoteInput = _('input', { type: 'text', disabled: true })),
-            _('button')._('Add to List').on('click', () => {
+            addButton = _('button', { disabled: true })._('Add to List').on('click', () => {
                 if (!(categorySelect.value && itemSelect.value && quantityInput.checkValidity() && quantitySelect.value)) { return; }
                 const newItemId = newItemIdInput.value || Date.now();
                 if ((savedInfo.list.keys().indexOf(categorySelect.value) == -1)) { savedInfo.list[categorySelect.value] = {} }

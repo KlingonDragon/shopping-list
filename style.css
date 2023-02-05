@@ -236,7 +236,10 @@ input, select {
 	border-radius: 0.5rem;
 	padding: 0.125rem 0;
 }
-:is(input, select)[disabled] {
+label:has( > :is(input, select)[disabled]) {
+    display: none;
+}
+:is(input, select, button)[disabled] {
     color: transparent;
 }
 input[type=number] {
