@@ -112,6 +112,8 @@ main {
     justify-content: space-between;
     align-items: center;
 	padding-block-end: 0.0625rem;
+}
+.listThing > div:not(:last-child) {
 	border-block-end: 0.0625rem dotted currentColor;
 }
 .listThing > div.json {
@@ -132,6 +134,9 @@ main {
     flex-flow: row wrap;
     justify-content: space-between;
     align-items: center;
+}
+.listThing > div > .content > strong {
+    width: 100%;
 }
 .listThing > div > .content > * {
     text-align: start;

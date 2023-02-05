@@ -156,7 +156,7 @@ async function loadList(listId) {
         _('h2')._(savedInfo.name),
         _('section')._(...savedInfo.list.entries().sort(([a, x], [b, y]) => a.toUpperCase() < b.toUpperCase() ? -1 : a.toUpperCase() > b.toUpperCase() ? 1 : 0).map(([category, items]) => items.keys().length ? _('fieldset', null, ['listThing'])._(
             _('legend')._(category),
-            ...items.entries().map(([itemId, { item: name, quantity: quantityValue, quantityType: quantityType, note: note, ticked: ticked }]) => _('div', { dataset: { ticked } })._(
+            ...items.map(([itemId, { item: name, quantity: quantityValue, quantityType: quantityType, note: note, ticked: ticked }]) => _('div', { dataset: { ticked } })._(
                 _('span', null, ['tickicon'])._(_('input', { type: 'checkbox', checked: ticked }).on('click', () => {
                     savedInfo.list[category][itemId].ticked = !savedInfo.list[category][itemId].ticked;
                     loadList(listId);
@@ -262,7 +262,7 @@ function renderLists() {
     const listOfLists = JSON.parse(localStorage.getItem('list_id_list') ?? '{}');
     main.__(
         _('h2')._('Available Shopping Lists'),
-        _('section', null, ['listThing'])._(...listOfLists.entries().map(([listId, listName]) => _('div')._(
+        _('section', null, ['listThing'])._(...listOfLists.map(([listId, listName]) => _('div')._(
             _('strong')._(
                 listName,
                 _('br'),
@@ -400,7 +400,7 @@ $('nav > button[name=manageData]').on('click', async () => {
         _('section')._(
             _('h3')._('Other Data Options'),
             _('button')._('Reload Page').on('click', () => {
-                $('main').style.visibility = 'hidden';
+                main.style.visibility = 'hidden';
                 Promise.all([fetch('index.html'), fetch('script.js'), fetch('style.css')]).then(() => location.reload(true));
             }),
             _('button', null, ['delete'])._('Clear ALL Data').on('click', () => {
