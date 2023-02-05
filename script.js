@@ -395,11 +395,14 @@ $('nav > button[name=manageData]').on('click', async () => {
             }))
         ),
         _('section')._(
-            _('h3')._('Clear Data'),
+            _('h3')._('Other Data Options'),
+            _('button')._('Reload Page').on('click', () => {
+                location.reload(true);
+            }),
             _('button', null, ['delete'])._('Clear ALL Data').on('click', () => {
                 localStorage.clear();
                 location.reload(true);
-            })
+            }),
         )
     )
 });
