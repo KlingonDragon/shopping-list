@@ -160,15 +160,9 @@ async function loadList(listId) {
                 let div, checkbox;
                 const tickDiv = () => {
                     const newValue = !savedInfo.list[category][itemId].ticked;
-                    console.log(savedInfo.list[category][itemId].ticked);
                     savedInfo.list[category][itemId].ticked = newValue;
-                    console.log(savedInfo.list[category][itemId].ticked);
-                    console.log(div.dataset.ticked);
                     div.dataset.ticked = newValue;
-                    console.log(div.dataset.ticked);
-                    console.log(checkbox.checked);
                     checkbox.checked = newValue;
-                    console.log(checkbox.checked);
                 };
                 div = _('div', { dataset: { ticked } })._(
                     _('span', null, ['tickicon'])._(checkbox = _('input', { type: 'checkbox', checked: ticked }).on('click', tickDiv)),
