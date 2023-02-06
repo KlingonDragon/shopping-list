@@ -156,32 +156,45 @@ async function loadList(listId) {
         _('h2')._(savedInfo.name),
         _('section', null, ['grow'])._(...savedInfo.list.entries().sort(([a, x], [b, y]) => a.toUpperCase() < b.toUpperCase() ? -1 : a.toUpperCase() > b.toUpperCase() ? 1 : 0).map(([category, items]) => items.keys().length ? _('fieldset', null, ['listThing'])._(
             _('legend')._(category),
-            ...items.map(([itemId, { item: name, quantity: quantityValue, quantityType: quantityType, note: note, ticked: ticked }]) => _('div', { dataset: { ticked } })._(
-                _('span', null, ['tickicon'])._(_('input', { type: 'checkbox', checked: ticked }).on('click', () => {
-                    savedInfo.list[category][itemId].ticked = !savedInfo.list[category][itemId].ticked;
-                    loadList(listId);
-                })),
-                _('span', null, ['content'])._(
-                    _('strong')._(name),
-                    _('span')._(`${quantityValue}\u2002${quantityType}`),
-                    _('span')._(note)
-                ),
-                _('span', null, ['buttons'])._(
-                    _('button')._('Edit').on('click', () => {
-                        newItemIdInput.value = itemId;
-                        categorySelect.value = category;
-                        categorySelect.do('change');
-                        itemSelect.value = name;
-                        itemSelect.do('change');
-                        quantityInput.value = quantityValue;
-                        quantitySelect.value = quantityType;
-                    }),
-                    _('button', null, ['delete'])._('Delete').on('click', () => {
-                        savedInfo.list[category][itemId] = undefined;
-                        loadList(listId);
-                    })
-                )
-            ))
+            ...items.map(([itemId, { item: name, quantity: quantityValue, quantityType: quantityType, note: note, ticked: ticked }]) => {
+                let div, checkbox;
+                const tickDiv = () => {
+                    const newValue = !savedInfo.list[category][itemId].ticked;
+                    console.log(savedInfo.list[category][itemId].ticked);
+                    savedInfo.list[category][itemId].ticked = newValue;
+                    console.log(savedInfo.list[category][itemId].ticked);
+                    console.log(div.dataset.ticked);
+                    div.dataset.ticked = newValue;
+                    console.log(div.dataset.ticked);
+                    console.log(checkbox.checked);
+                    checkbox.checked = newValue;
+                    console.log(checkbox.checked);
+                };
+                div = _('div', { dataset: { ticked } })._(
+                    _('span', null, ['tickicon'])._(checkbox = _('input', { type: 'checkbox', checked: ticked }).on('click', tickDiv)),
+                    _('span', null, ['content'])._(
+                        _('strong')._(name),
+                        _('span')._(`${quantityValue}\u2002${quantityType}`),
+                        _('span')._(note)
+                    ).on('click', tickDiv),
+                    _('span', null, ['buttons'])._(
+                        _('button')._('Edit').on('click', () => {
+                            newItemIdInput.value = itemId;
+                            categorySelect.value = category;
+                            categorySelect.do('change');
+                            itemSelect.value = name;
+                            itemSelect.do('change');
+                            quantityInput.value = quantityValue;
+                            quantitySelect.value = quantityType;
+                            quantitySelect.do('change');
+                        }),
+                        _('button', null, ['delete'])._('Delete').on('click', () => {
+                            savedInfo.list[category][itemId] = undefined;
+                            loadList(listId);
+                        })
+                    )
+                ); return div;
+            })
         ) : null)),
         _('section', null, ['newThing'])._(
             newItemIdInput = _('input', { type: 'hidden' }),
